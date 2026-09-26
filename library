@@ -1,0 +1,118 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Book {
+public:
+    int id;
+    string title;
+    string author;
+    bool issued;
+
+    void addBook() {
+        cout << "Enter Book ID: ";
+        cin >> id;
+        cin.ignore();
+
+        cout << "Enter Book Title: ";
+        getline(cin, title);
+
+        cout << "Enter Author Name: ";
+        getline(cin, author);
+
+        issued = false;
+    }
+
+    void displayBook() {
+        cout << "\nBook ID: " << id;
+        cout << "\nTitle: " << title;
+        cout << "\nAuthor: " << author;
+        cout << "\nStatus: " << (issued ? "Issued" : "Available") << endl;
+    }
+};
+
+int main() {
+    Book b[10];
+    int count = 0, choice, searchId;
+    string searchTitle;
+
+    do {
+        cout << "\n===== LIBRARY MANAGEMENT SYSTEM =====";
+        cout << "\n1. Add Book";
+        cout << "\n2. Display Books";
+        cout << "\n3. Issue Book";
+        cout << "\n4. Return Book";
+        cout << "\n5. Search Book by Title";
+        cout << "\n6. Exit";
+        cout << "\nEnter Choice: ";
+        cin >> choice;
+
+        switch(choice) {
+
+        case 1:
+            b[count].addBook();
+            count++;
+            break;
+
+        case 2:
+            for(int i = 0; i < count; i++) {
+                b[i].displayBook();
+            }
+            break;
+
+        case 3:
+            cout << "Enter Book ID to Issue: ";
+            cin >> searchId;
+
+            for(int i = 0; i < count; i++) {
+                if(b[i].id == searchId) {
+                    if(!b[i].issued) {
+                        b[i].issued = true;
+                        cout << "Book Issued Successfully!\n";
+                    } else {
+                        cout << "Book Already Issued!\n";
+                    }
+                }
+            }
+            break;
+
+        case 4:
+            cout << "Enter Book ID to Return: ";
+            cin >> searchId;
+
+            for(int i = 0; i < count; i++) {
+                if(b[i].id == searchId) {
+                    if(b[i].issued) {
+                        b[i].issued = false;
+                        cout << "Book Returned Successfully!\n";
+                    } else {
+                        cout << "Book was not issued!\n";
+                    }
+                }
+            }
+            break;
+
+        case 5:
+            cin.ignore();
+            cout << "Enter Book Title: ";
+            getline(cin, searchTitle);
+
+            for(int i = 0; i < count; i++) {
+                if(b[i].title == searchTitle) {
+                    b[i].displayBook();
+                }
+            }
+            break;
+
+        case 6:
+            cout << "Exiting Program...";
+            break;
+
+        default:
+            cout << "Invalid Choice!";
+        }
+
+    } while(choice != 6);
+
+    return 0;
+}
